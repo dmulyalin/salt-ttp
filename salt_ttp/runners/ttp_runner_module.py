@@ -160,7 +160,6 @@ Sample template::
 """
 # Import python libs
 import logging
-import sys
 import traceback
 
 # Import salt modules
@@ -347,22 +346,26 @@ def run(*args, **kwargs):
     # create TTP parser object
     parser = ttp(vars=vars_to_share)
     parser.add_function(_elasticsearch_return, scope="returners", name="elasticsearch")
-    # get TTP template
-    template_text = __salt__["salt.cmd"](
-        "cp.get_file_str",
-        template,
-        saltenv=kwargs.pop("saltenv", "base"),
-    )
+    # get ttp template from file on master, if template starts with 'ttp://''
+    # it will be loaded from ttp_templates collection repository
+    if template.startswith("ttp://"):
+        template_text = template
+    else:
+        template_text = __salt__["salt.cmd"](
+            "cp.get_file_str",
+            template,
+            saltenv=kwargs.pop("saltenv", "base"),
+        )
     if not template_text:
         raise CommandExecutionError("Failed to get TTP template '{}'".format(template))
     try:
         parser.add_template(template_text)
     except:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
+        tb = traceback.format_exc()
         raise CommandExecutionError(
             "Failed to load TTP template: {}\n{}".format(
                 template,
-                "".join(traceback.format_exception(exc_type, exc_value, exc_traceback)),
+                tb
             )
         )
     # get template inputs load
@@ -424,11 +427,11 @@ def run(*args, **kwargs):
         parser.parse(one=True)
         ret = parser.result(**ttp_res_kwargs)
     except:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
+        tb = traceback.format_exc()
         raise CommandExecutionError(
             "Failed to parse output with TTP template '{}'\n\n{}".format(
                 template,
-                "".join(traceback.format_exception(exc_type, exc_value, exc_traceback)),
+                tb
             )
         )
     return ret

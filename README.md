@@ -2,14 +2,14 @@
 
 Repository to store TTP based SALTSTACK modules:
 
-- salt-tto execution module
-- salt-tto runner module
+- salt-ttp execution module
+- salt-ttp runner module
 
 TTP modules [pull request](https://github.com/saltstack/salt/pull/58754)
 
 ## Motivation
 
-TTP is a library for parsing semi structured text using templates. 
+[TTP](https://github.com/dmulyalin/ttp) is a library for parsing semi structured text using templates. 
 
 TTP execution and runner modules allow to run commands against minions to obtain text output, parse it using TTP templates and return structured data.
 
@@ -23,10 +23,18 @@ Sample use cases that TTP can help to address:
 
 ## Installation
 
-To use TTP execution module make sure to install salt-ttp on minion, to use TTP runner module make sure to install salt-ttp on master. From [PyPi distribution](https://pypi.org/project/salt-ttp/0.1.0/)
+To use TTP execution module make sure to install salt-ttp on minion, to use TTP runner module make sure to install salt-ttp on master. 
+
+From [PyPi distribution](https://pypi.org/project/salt-ttp/0.1.0/):
 
 ```
 pip install salt_ttp
+```
+
+From GitHub repository:
+
+```
+python -m pip install git+https://github.com/dmulyalin/salt-ttp
 ```
 
 To use templates from [TTP templates collection](https://github.com/dmulyalin/ttp_templates), need to install them as well:
