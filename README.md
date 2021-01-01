@@ -28,7 +28,7 @@ To use TTP execution module make sure to install salt-ttp on minion, to use TTP 
 From [PyPi distribution](https://pypi.org/project/salt-ttp/0.1.0/):
 
 ```
-pip install salt_ttp
+pip install salt-ttp
 ```
 
 From GitHub repository:
